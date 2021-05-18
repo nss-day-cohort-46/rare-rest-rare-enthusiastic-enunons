@@ -1,0 +1,28 @@
+[
+    {
+        "model": "rareapi.post",
+        "pk": 1,
+        "fields": {
+            "user_id": 1,
+            "category_id": 1,
+            "title": "Gordan Ramsey Makes Scrambled Eggs",
+            "publication_date": "2020-09-11",
+            "image_url": "https://i.insider.com/5f5bad66e6ff30001d4e85b3?width=1000&format=jpeg&auto=webp",
+            "content": "Gordon Ramsay may be famous for creating beautiful and luxurious meals, but the one dish the highly decorated Michelin-starred chef, TV personality, and MasterChef says he uses to judge a new cook is rather simple: scrambled eggs.",
+            "approved": true
+        }
+    },
+    {
+        "model": "rareapi.post",
+        "pk": 2,
+        "fields": {
+            "user_id": 1,
+            "category_id": 2,
+            "title": "Happy birthday Enya, one of the world's top-earning female artists",
+            "publication_date": "2021-05-17",
+            "image_url": "https://www.irishcentral.com/uploads/article/113743/cropped_MI_Enya_singer_wikicommons.jpg?t=1621241762",
+            "content": "The 'Only Time' and 'Orinoco Flow' singer was born as Eithne Pádraigín Ní Bhraonáin in Gweedore, County Donegal, on May 17, 1961.",
+            "approved": true
+        }
+    }
+]
