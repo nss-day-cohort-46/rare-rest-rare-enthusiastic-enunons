@@ -1,4 +1,3 @@
-"""View module for handling requests about games"""
 from django.core.exceptions import ValidationError
 from django.http import HttpResponseServerError
 from rest_framework import status
@@ -13,8 +12,10 @@ class Categories(ViewSet):
         try:
             category = Category.objects.get(pk=pk)
             serializer = CategorySerializer(category, context={'request': request})
+            return Response(serializer.data)
+
         except Exception as ex:
-                    return HttpResponseServerError(ex)
+            return HttpResponseServerError(ex)
 
     def list(self, request):
         categories =  Category.objects.all()
