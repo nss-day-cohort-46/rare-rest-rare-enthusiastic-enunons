@@ -1,0 +1,26 @@
+[
+    {
+        "model": "rareapi.reaction",
+        "pk": 1,
+        "fields": {
+            "label": "Like",
+            "img_url": ""
+        }
+    },
+    {
+        "model": "rareapi.reaction",
+        "pk": 2,
+        "fields": {
+            "label": "Dislike",
+            "img_url": ""
+        }
+    },
+    {
+        "model": "rareapi.reaction",
+        "pk": 3,
+        "fields": {
+            "label": "Love",
+            "img_url": ""
+        }
+    }
+]
