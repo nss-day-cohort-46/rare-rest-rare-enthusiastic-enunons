@@ -13,11 +13,29 @@ from rareapi.models import Tag
 class TagView(ViewSet):
     """Level up tags"""
 
-    def retrieve(self, request, pk=None):
-        """Handle GET requests for single tag 
+    def create(self, request):
+        """Handle POST operations
 
         Returns:
-            Response -- JSON serialized tag 
+            Response -- JSON serialized tag instance
+        """
+        tag = Tag()
+        tag.label = request.data["label"]
+
+        try:
+            tag.save()
+            serializer = TagSerializer(tag, context={'request': request})
+            return Response(serializer.data)
+
+        except ValidationError as ex:
+            return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def retrieve(self, request, pk=None):
+        """Handle GET requests for single tag
+
+        Returns:
+            Response -- JSON serialized tag
         """
         try:
             tag = Tag.objects.get(pk=pk)
