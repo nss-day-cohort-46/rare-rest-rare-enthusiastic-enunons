@@ -3,10 +3,10 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
 from rareapi.views import register_user, login_user
-from rareapi.views import Category
+from rareapi.views import CategoryView
 
 router = routers.DefaultRouter(trailing_slash=False)
-router.register(r'categories', Category, 'category')
+router.register(r'categories', CategoryView, 'category')
 
 urlpatterns = [
     path('', include(router.urls)),

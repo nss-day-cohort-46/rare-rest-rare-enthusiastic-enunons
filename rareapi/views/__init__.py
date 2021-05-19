@@ -1,2 +1,2 @@
 from .auth import register_user, login_user
-from .category import Category
+from .category import CategoryView

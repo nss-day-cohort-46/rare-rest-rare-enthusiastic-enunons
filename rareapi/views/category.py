@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rareapi.models import Category
 
-class Categories(ViewSet):
+class CategoryView(ViewSet):
 
     def retrieve(self, request, pk=None):
         try:
