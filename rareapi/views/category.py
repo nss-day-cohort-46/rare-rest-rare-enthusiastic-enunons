@@ -4,7 +4,8 @@ from rest_framework import status
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
-from rareapi.models import Category, category
+from rareapi.models import Category
+from django.db.models import Q
 
 class CategoryView(ViewSet):
 
@@ -12,7 +13,17 @@ class CategoryView(ViewSet):
 # get all
 # ****************************************************
     def list(self, request):
-        categories =  Category.objects.all()
+
+        #get search params from request
+        #if no search then get all objects
+        #else filter
+
+        search_terms = self.request.query_params.get('searchTerms', None)
+        if search_terms is not None:
+            categories = Category.objects.filter(Q(label__contains=search_terms))
+        else:
+            categories =  Category.objects.all()
+
         serializer = CategorySerializer(categories, many=True, context={'request': request})
         return Response(serializer.data)
 
