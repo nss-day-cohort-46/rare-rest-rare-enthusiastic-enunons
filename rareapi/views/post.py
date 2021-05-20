@@ -6,6 +6,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rareapi.models import Post, RareUser, Category
+from django.contrib.auth.models import User
 from datetime import date
 
 class PostView(ViewSet):
@@ -51,7 +52,7 @@ class PostView(ViewSet):
 
         rare_user = RareUser.objects.get(user=request.auth.user)
 
-        post = Post()
+        post = Post.objects.get(pk=pk)
         post.rare_user = rare_user
         post.title = request.data["title"]
         post.publication_date = date.today()
@@ -79,10 +80,26 @@ class PostView(ViewSet):
         except Exception as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+class PostUserSerializer(serializers.ModelSerializer):
+    """JSON serializer for user's related Django user"""
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email']
+
+class RareUserSerializer(serializers.ModelSerializer):
+    """JSON serializer for rare user"""
+    user = PostUserSerializer(many=False)
+
+    class Meta:
+        model = RareUser
+        fields = ['user']
+
 class PostSerializer(serializers.ModelSerializer):
+
+    rare_user = RareUserSerializer(many=False)
 
     class Meta:
         model = Post
         fields = ('id', 'rare_user', 'category', 'title', 'publication_date',
                     'image_url', 'content', 'approved')
-        depth = 1
+        
