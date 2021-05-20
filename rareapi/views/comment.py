@@ -1,12 +1,13 @@
 from django.core.exceptions import ValidationError
+from django.db.models.fields import DateTimeCheckMixin
 from django.http import HttpResponseServerError
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import serializers
-from rareapi.models import Post, Comment, RareUser
+from rareapi.models import Post, Comment, RareUser, comment
 from rest_framework.viewsets import ViewSet
-
+from datetime import datetime
 
 class CommentView(ViewSet):
     def create(self, request):
@@ -21,7 +22,7 @@ class CommentView(ViewSet):
 
         comment = Comment()
         comment.content = request.data["content"]
-        comment.created_on = request.data["createdOn"]
+        comment.created_on = datetime.now()
         comment.author = author
         comment.post = post
 
@@ -32,6 +33,28 @@ class CommentView(ViewSet):
         except ValidationError as ex:
             return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
 
+    def list(self, request):
+        """Handle GET requests to get all tags
+        Returns:
+            Response -- JSON serialized list of tags
+        """
+        comment = Comment.objects.all()
+        serializer = CommentSerializer(
+            comment, many=True, context={'request': request})
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        """Handle GET requests for single comment
+
+        Returns:
+            Response -- JSON serialized comment instance
+        """
+        try:
+            comment = Comment.objects.get(pk=pk)
+            serializer = CommentSerializer(comment, context={'request': request})
+            return Response(serializer.data)
+        except Exception:
+            return HttpResponseServerError(ex)
 
     def destroy(self, request, pk=None):
         """Handle DELETE requests for a single comment

@@ -1,2 +1,2 @@
-SELECT * FROM auth_user;
+SELECT * FROM post;
 SELECT * FROM authtoken_token;
