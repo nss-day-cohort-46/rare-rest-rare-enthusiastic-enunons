@@ -8,6 +8,7 @@ from rest_framework import serializers
 from rareapi.models import Post, RareUser, Category
 from django.contrib.auth.models import User
 from datetime import date
+from django.db.models import Q
 
 class PostView(ViewSet):
 
@@ -43,7 +44,12 @@ class PostView(ViewSet):
             return HttpResponseServerError(ex)
 
     def list(self, request):
-        posts = Post.objects.all()
+        search_terms = self.request.query_params.get('searchTerms', None)
+        if search_terms is not None:
+            posts = Post.objects.filter(Q(title__contains=search_terms))
+        else:
+            posts = Post.objects.all()
+
         serializer = PostSerializer(
             posts, many=True, context={'request': request})
         return Response(serializer.data)
