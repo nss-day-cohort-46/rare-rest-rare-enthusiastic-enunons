@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import serializers
-from rareapi.models import Post, Comment, RareUser, comment
+from rareapi.models import Post, Comment, RareUser
 from rest_framework.viewsets import ViewSet
 from datetime import datetime
 
@@ -91,7 +91,7 @@ class CommentView(ViewSet):
 
 
         comment.content = request.data["content"]
-        comment.created_on = request.data["createdOn"]
+        comment.created_on = datetime.now()
         comment.author = author
         comment.post = post
 
