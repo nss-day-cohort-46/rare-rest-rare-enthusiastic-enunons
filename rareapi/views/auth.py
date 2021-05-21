@@ -29,7 +29,7 @@ def login_user(request):
         if authenticated_user is not None:
             token = Token.objects.get(user=authenticated_user)
             data = json.dumps(
-                {"valid": True, "token": token.key, "admin": authenticated_user.is_staff})
+                {"valid": True, "token": token.key, "admin": authenticated_user.is_staff, "id": authenticated_user.id})
             return HttpResponse(data, content_type='application/json')
 
         else:
@@ -73,5 +73,5 @@ def register_user(request):
     token = Token.objects.create(user=new_user)
 
     # Return the token to the client
-    data = json.dumps({"token": token.key})
+    data = json.dumps({"token": token.key, "id": user.id})
     return HttpResponse(data, content_type='application/json')

@@ -1,5 +1,6 @@
 """View module for handling requests about posts"""
 from django.core.exceptions import ValidationError
+from django.db.models.fields import URLField
 from rest_framework import status
 from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
@@ -44,9 +45,18 @@ class PostView(ViewSet):
             return HttpResponseServerError(ex)
 
     def list(self, request):
-        search_terms = self.request.query_params.get('searchTerms', None)
-        if search_terms is not None:
-            posts = Post.objects.filter(Q(title__contains=search_terms))
+
+        rare_user1 = RareUser.objects.get(user=request.auth.user)
+        # posts = Post.objects.filter(rare_user=rare_user1)
+
+        # search_terms = self.request.query_params.get('searchTerms', None)
+        # if search_terms is not None:
+        #     posts = Post.objects.filter(Q(title__contains=search_terms))
+        # else:
+        #     posts = Post.objects.all()
+        
+        if request.path=="/myposts":
+            posts = Post.objects.filter(rare_user=rare_user1)
         else:
             posts = Post.objects.all()
 
