@@ -13,3 +13,11 @@ class Post(models.Model):
     approved = models.BooleanField(default=False)
     tags = models.ManyToManyField(
         "Tag", through="PostTag", related_name="tags")
+
+    @property
+    def tags(self):
+        return self.tags
+
+    @tags.setter
+    def tags(self, value):
+        self.tags = value

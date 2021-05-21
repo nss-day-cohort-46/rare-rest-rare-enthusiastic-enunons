@@ -7,10 +7,11 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rareapi.models import Post, RareUser, Category
 
+
 class PostView(ViewSet):
 
     def create(self, request):
-        
+
         rare_user = RareUser.objects.get(user=request.auth.user)
 
         post = Post()
@@ -47,10 +48,17 @@ class PostView(ViewSet):
             posts, many=True, context={'request': request})
         return Response(serializer.data)
 
+    @action(methods=['post', 'delete'], detail=True)
+    def addTag(self, request, pk=None):
+        """Managing adding tags to posts"""
+        if request.method == "POST":
+            post = Post.objects.get(pk=pk)
+
+
 class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
         fields = ('id', 'rare_user', 'category', 'title', 'publication_date',
-                    'image_url', 'content', 'approved')
+                  'image_url', 'content', 'approved', 'tags')
         depth = 1
