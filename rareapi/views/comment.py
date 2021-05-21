@@ -95,12 +95,14 @@ class CommentView(ViewSet):
         comment.author = author
         comment.post = post
 
-        comment.save()
-        
-        # 204 status code means everything worked but the
-        # server is not sending back any data in the response
-        return Response({}, status=status.HTTP_204_NO_CONTENT)
+        try:
+            comment.save()
+            # 204 status code means everything worked but the
+            # server is not sending back any data in the response
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
 
+        except Exception:
+            return HttpResponseServerError(Exception)
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
